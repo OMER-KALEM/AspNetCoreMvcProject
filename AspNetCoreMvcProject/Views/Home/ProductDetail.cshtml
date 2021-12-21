@@ -1,0 +1,15 @@
+﻿@model Product
+@{ ViewData["Title"] = "ProductDetail";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="~/img/@Model.Image" class="w-100" alt="" />
+    </div>
+    <div class="col-md-8">
+        <h4>@Model.ProductName</h4>
+        <p class="text-success">@Model.UnitPrice <b>TL</b></p>
+        <a class="btn btn-primary" asp-action="" asp-controller="Home" asp-route-id="@Model.ProductId"></a>
+    </div>
+</div>
+

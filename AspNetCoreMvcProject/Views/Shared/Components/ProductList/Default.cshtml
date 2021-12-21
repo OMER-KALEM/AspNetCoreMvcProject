@@ -1,16 +1,18 @@
-﻿@using AspNetCoreMvcProject.Entities
-@model List<Product>
+﻿@model List<Product>
 
-@foreach (var item in @Model)
-{
-    <div class="col-md-3">
-        <div class="card mr-1 mb-1">
-            <img src="..." class="card-img-top" alt="Resim yok">
-            <div class="card-body">
-                <h5 class="card-title">@item.ProductName</h5>
-                <p class="card-text">@item.UnitPrice</p>
-                <a href="#" class="btn btn-primary">Detay</a>
+<div class="row">
+
+    @foreach (var item in @Model)
+    {
+        <div class="col-md-3">
+            <div class="card mr-1 mb-1">
+                <img src="..." class="card-img-top" alt="Resim yok">
+                <div class="card-body">
+                    <h5 class="card-title">@item.ProductName</h5>
+                    <p class="card-text">@item.UnitPrice</p>
+                    <a asp-action="ProductDetail" asp-controller="Home" asp-route-id="@item.ProductId" class="btn btn-primary float-right">Detay</a>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>

@@ -19,5 +19,12 @@ namespace AspNetCoreMvcProject.Controllers
         {
             return View(_productRepository.GetAll());
         }
+
+        public IActionResult ProductDetail(int id)
+        {
+            //ViewBag.Sepet = HttpContext.Session.GetObject<List<SepetModel>>("sepet");
+            ViewBag.Sepet = new object();
+            return View(_productRepository.GetById(id));
+        }
     }
 }
