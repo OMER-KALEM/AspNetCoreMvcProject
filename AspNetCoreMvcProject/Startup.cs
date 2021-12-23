@@ -23,6 +23,7 @@ namespace AspNetCoreMvcProject
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -36,6 +37,7 @@ namespace AspNetCoreMvcProject
 
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
