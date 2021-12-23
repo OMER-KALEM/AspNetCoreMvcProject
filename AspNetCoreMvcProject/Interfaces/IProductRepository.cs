@@ -8,5 +8,6 @@ namespace AspNetCoreMvcProject.Interfaces
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
+        List<Category> GetCategories(int productId);
     }
 }
