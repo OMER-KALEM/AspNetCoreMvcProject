@@ -44,5 +44,29 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
 
             return View(addCategoryModel);
         }
+
+        public IActionResult UpdateCategory(int id)
+        {
+            var currentCategory = _categoryRepository.GetById(id);
+            UpdateCategoryModel updateCategoryModel = new UpdateCategoryModel();
+            updateCategoryModel.CategoryId = currentCategory.CategoryId;
+            updateCategoryModel.CategoryName = currentCategory.CategoryName;
+
+            return View(updateCategoryModel);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCategory(UpdateCategoryModel updateCategoryModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Category categoryToUpdate = _categoryRepository.GetById(updateCategoryModel.CategoryId);
+                categoryToUpdate.CategoryName = updateCategoryModel.CategoryName;
+                _categoryRepository.Update(categoryToUpdate);
+                return RedirectToAction("Index");
+            }
+
+            return View(new UpdateCategoryModel());
+        }
     }
 }
