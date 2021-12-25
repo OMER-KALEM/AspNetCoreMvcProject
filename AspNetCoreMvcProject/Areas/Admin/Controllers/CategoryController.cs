@@ -68,5 +68,12 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
 
             return View(new UpdateCategoryModel());
         }
+
+        public IActionResult DeleteCategory(int id)
+        {
+            _categoryRepository.Remove(new Category { CategoryId = id });
+
+            return RedirectToAction("Index");
+        }
     }
 }
