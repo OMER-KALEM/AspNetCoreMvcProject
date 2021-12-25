@@ -1,4 +1,6 @@
-﻿using AspNetCoreMvcProject.Interfaces;
+﻿using AspNetCoreMvcProject.Entities;
+using AspNetCoreMvcProject.Interfaces;
+using AspNetCoreMvcProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +24,25 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View(_categoryRepository.GetAll());
+        }
+
+        public IActionResult AddCategory()
+        {
+            return View(new AddCategoryModel());
+        }
+
+        [HttpPost]
+        public IActionResult AddCategory(AddCategoryModel addCategoryModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Category category = new Category();
+                category.CategoryName = addCategoryModel.CategoryName;
+                _categoryRepository.Add(category);
+                return RedirectToAction("Index");
+            }
+
+            return View(addCategoryModel);
         }
     }
 }
