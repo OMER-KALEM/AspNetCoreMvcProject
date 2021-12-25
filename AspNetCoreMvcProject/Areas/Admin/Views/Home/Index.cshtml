@@ -1,5 +1,7 @@
 ﻿@model List<Product>
 
+<a asp-action="AddProduct" asp-controller="Home" asp-area="Admin" class="btn btn-primary btn-sm my-2">Add</a>
+
 <table class="table table-sm table-bordered table-hover mt-2">
     <tr>
         <th>Id</th>
@@ -12,7 +14,7 @@
     {
         <tr>
             <td>@product.ProductId</td>
-            <td></td>
+            <td>@product.Image</td>
             <td>@product.ProductName</td>
             <td>@product.UnitPrice</td>
         </tr>
