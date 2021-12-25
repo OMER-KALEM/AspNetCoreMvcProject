@@ -45,7 +45,11 @@ namespace AspNetCoreMvcProject.Controllers
         [HttpPost]
         public IActionResult LogIn(UserLoginModel userLoginModel)
         {
-            return View(new UserLoginModel());
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(userLoginModel);
         }
     }
 }
