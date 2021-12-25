@@ -64,5 +64,51 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
             }
             return View(addProductModel);
         }
+
+        public IActionResult UpdateProduct(int id)
+        {
+            var currentProduct = _productRepository.GetById(id);
+            UpdateProductModel updateProductModel = new UpdateProductModel {
+                ProductId = currentProduct.ProductId,
+                ProductName = currentProduct.ProductName,
+                UnitPrice = currentProduct.UnitPrice
+            };
+
+            return View(updateProductModel);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProduct(UpdateProductModel updateProductModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var productToUpdate = _productRepository.GetById(updateProductModel.ProductId);
+
+                if (updateProductModel.Image != null)
+                {
+                    try
+                    {
+                        var contentType = Path.GetExtension(updateProductModel.Image.FileName);
+                        var imageName = Guid.NewGuid() + contentType;
+                        var toUpload = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/" + imageName);
+                        var stream = new FileStream(toUpload, FileMode.Create);
+                        updateProductModel.Image.CopyTo(stream);
+                        productToUpdate.Image = imageName;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                productToUpdate.ProductName = updateProductModel.ProductName;
+                productToUpdate.UnitPrice = updateProductModel.UnitPrice;
+                _productRepository.Update(productToUpdate);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(updateProductModel);
+        }
     }
 }
