@@ -10,7 +10,7 @@ namespace AspNetCoreMvcProject.Controllers
 {
     public class HomeController : Controller
     {
-        IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
         public HomeController(IProductRepository productRepository)
         {
             _productRepository = productRepository;

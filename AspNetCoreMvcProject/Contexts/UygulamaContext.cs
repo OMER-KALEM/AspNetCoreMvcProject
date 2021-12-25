@@ -1,4 +1,5 @@
 ﻿using AspNetCoreMvcProject.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreMvcProject.Contexts
 {
-    public class UygulamaContext : DbContext
+    public class UygulamaContext : IdentityDbContext<AppUser>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=WebProjeOdev;Trusted_Connection=true");
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +30,7 @@ namespace AspNetCoreMvcProject.Contexts
                 I.ProductId
             }).IsUnique();
 
+            base.OnModelCreating(modelBuilder);
         }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
