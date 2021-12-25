@@ -1,4 +1,5 @@
 ﻿using AspNetCoreMvcProject.Interfaces;
+using AspNetCoreMvcProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +23,11 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View(_productRepository.GetAll());
+        }
+
+        public IActionResult AddProduct()
+        {
+            return View(new AddProductModel());
         }
     }
 }
