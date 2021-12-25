@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreMvcProject.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,20 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreMvcProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize]
     public class HomeController : Controller
     {
-        [Area("Admin")]
-        [Authorize]
+        private readonly IProductRepository _productRepository;
+
+        public HomeController(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_productRepository.GetAll());
         }
     }
 }
