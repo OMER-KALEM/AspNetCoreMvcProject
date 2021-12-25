@@ -1,1 +1,20 @@
-﻿<h1>Burası Admin</h1>
+﻿@model List<Product>
+
+<table class="table table-sm table-bordered table-hover mt-2">
+    <tr>
+        <th>Id</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.ProductId</td>
+            <td></td>
+            <td>@product.ProductName</td>
+            <td>@product.UnitPrice</td>
+        </tr>
+    }
+</table>
