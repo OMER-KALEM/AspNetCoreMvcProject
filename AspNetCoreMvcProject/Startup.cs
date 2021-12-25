@@ -24,6 +24,7 @@ namespace AspNetCoreMvcProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UygulamaContext>();
+            services.AddAuthentication();
             services.AddIdentity<AppUser, IdentityRole>(opt => {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
@@ -31,6 +32,13 @@ namespace AspNetCoreMvcProject
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 }).AddEntityFrameworkStores<UygulamaContext>();
+            services.ConfigureApplicationCookie(opt => {
+                opt.LoginPath = new PathString("/Home/Login");
+                opt.Cookie.Name = "AspNetCoreMvcProject";
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.SameSite = SameSiteMode.Strict;
+                opt.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            });
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
@@ -50,10 +58,13 @@ namespace AspNetCoreMvcProject
             app.UseRouting();
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
-                //endpoints.MapControllerRoute(name:"default",pattern:"{Controller=Home}/{Action=Index}");
+                endpoints.MapControllerRoute(name: "areas", pattern: "{area}/{Controller=Home}/{Action=Index}/{id?}");
+                //endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(name: "default", pattern: "{Controller=Home}/{Action=Index}/{id?}");
             });
         }
     }

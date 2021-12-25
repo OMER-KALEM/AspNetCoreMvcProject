@@ -1,4 +1,5 @@
 ﻿using AspNetCoreMvcProject.Interfaces;
+using AspNetCoreMvcProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,15 +19,11 @@ namespace AspNetCoreMvcProject.Controllers
 
         public IActionResult Index()
         {
-            SetCookies("person", "Omer");
-            SetSession("person2", "Omer2");
             return View(_productRepository.GetAll());
         }
 
         public IActionResult ProductDetail(int id)
         {
-            ViewBag.Cookie = GetCookie("person");
-            ViewBag.Session = GetSession("person2");
             return View(_productRepository.GetById(id));
         }
 
@@ -39,15 +36,16 @@ namespace AspNetCoreMvcProject.Controllers
             HttpContext.Request.Cookies.TryGetValue(key,out string value);
             return value;
         }
-        
-        public void SetSession(string key, string value)
+
+        public IActionResult LogIn()
         {
-            HttpContext.Session.SetString(key, value);
+            return View(new UserLoginModel());
         }
 
-        public string GetSession(string key)
+        [HttpPost]
+        public IActionResult LogIn(UserLoginModel userLoginModel)
         {
-            return HttpContext.Session.GetString(key);
+            return View(new UserLoginModel());
         }
     }
 }
