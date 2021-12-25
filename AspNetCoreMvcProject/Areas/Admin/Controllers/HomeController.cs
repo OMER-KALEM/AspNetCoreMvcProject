@@ -110,5 +110,12 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
 
             return View(updateProductModel);
         }
+
+        public IActionResult DeleteProduct(int id)
+        {
+            _productRepository.Remove(new Product { ProductId = id });
+
+            return RedirectToAction("Index");
+        }
     }
 }

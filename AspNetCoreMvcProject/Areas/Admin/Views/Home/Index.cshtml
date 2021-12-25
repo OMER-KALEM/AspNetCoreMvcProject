@@ -19,6 +19,7 @@
             <td>@product.UnitPrice</td>
             <td>
                 <a asp-action="UpdateProduct" asp-controller="Home" asp-area="Admin" asp-route-id="@product.ProductId" class="btn btn-warning btn-sm">Update</a>
+                <a asp-action="DeleteProduct" asp-controller="Home" asp-area="Admin" asp-route-id="@product.ProductId" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
     }
