@@ -21,9 +21,10 @@ namespace AspNetCoreMvcProject.Controllers
             _productRepository = productRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId)
         {
-            return View(_productRepository.GetAll());
+            ViewBag.CategoryId = categoryId;
+            return View();
         }
 
         public IActionResult ProductDetail(int id)

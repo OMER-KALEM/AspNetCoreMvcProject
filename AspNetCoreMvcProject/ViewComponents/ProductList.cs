@@ -12,8 +12,12 @@ namespace AspNetCoreMvcProject.ViewComponents
             _productRepository = productRepository;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int? categoryId)
         {
+            if (categoryId.HasValue)
+            {
+                return View(_productRepository.GetAllByCategoryId((int)categoryId));
+            }
             return View(_productRepository.GetAll());
         }
     }
