@@ -13,20 +13,22 @@ namespace AspNetCoreMvcProject
         {
             AppUser appUser = new AppUser
             {
-                Name = "Omer",
-                SurName = "Kalem",
-                UserName = "OMERKA"
-                
+                Name = "UserMuhammet",
+                SurName = "Ates",
+                UserName = "AtesUserMuhammet"
+
             };
-            if (userManager.FindByNameAsync("Omer").Result == null)
+
+            if (userManager.FindByNameAsync("UserMuhammet").Result == null)
             {
                 var identityResult = userManager.CreateAsync(appUser,"1").Result;
             }
-            if (roleManager.FindByNameAsync("Admin").Result == null)
+
+            if (roleManager.FindByNameAsync("User").Result == null)
             {
                 IdentityRole identityRole = new IdentityRole
                 { 
-                    Name = "Admin"
+                    Name = "User"
                 };
                 var identityResult = roleManager.CreateAsync(identityRole).Result;
                 var result = userManager.AddToRoleAsync(appUser, identityRole.Name).Result;

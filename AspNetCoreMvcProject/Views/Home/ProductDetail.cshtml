@@ -14,12 +14,12 @@
                     <h5 class="card-title">@Model.ProductName</h5>
 
                     <p class="card-text">
-                        <strong>Categories : </strong><getCategoryName product-id="@Model.ProductId"></getCategoryName>
+                        <strong>Kategoriler : </strong><getCategoryName product-id="@Model.ProductId"></getCategoryName>
                         @Model.UnitPrice
                     </p>
 
-                    <a asp-action="AddToBasket" asp-controller="Home" asp-route-id="@Model.ProductId" class="btn btn-primary ml-1 float-right">Add to Basket</a>
-                    <a class="btn btn-primary btn btn-danger float-right" asp-action="Index" asp-controller="Home">Go Back</a>
+                    <a asp-action="AddToBasket" asp-controller="Home" asp-route-id="@Model.ProductId" class="btn btn-primary ml-1 float-right">Sepete Ekle</a>
+                    <a class="btn btn-primary btn btn-danger float-right" asp-action="Index" asp-controller="Home">Geri</a>
                 </div>
             </div>
         </div>

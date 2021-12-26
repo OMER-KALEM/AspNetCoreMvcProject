@@ -12,11 +12,11 @@
 {
     <div>
         <div class="card">
-            <h5 class="card-header">Price Info</h5>
+            <h5 class="card-header">Fiyat Bilgisi</h5>
             <div class="card-body">
-                <p class="card-text">Total price of basket : @totalPrice TL</p>
-                <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Go on to shopping</a>
-                <a asp-action="RemoveBasket" asp-controller="Home" asp-route-totalPrice="@totalPrice" class="btn btn-primary">Buy</a>
+                <p class="card-text">Sepetin toplam tutarı : @totalPrice TL</p>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Alışverişe Devam Et</a>
+                <a asp-action="RemoveBasket" asp-controller="Home" asp-route-totalPrice="@totalPrice" class="btn btn-primary">Satın Al</a>
             </div>
         </div>
         @foreach (var product in Model)
@@ -30,7 +30,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@product.ProductName</h5>
                             <p class="card-text">@product.UnitPrice TL</p>
-                            <a asp-action="RemoveFromBasket" asp-controller="Home" asp-route-id="@product.ProductId" class="btn btn-danger">Remove From Basket</a>
+                            <a asp-action="RemoveFromBasket" asp-controller="Home" asp-route-id="@product.ProductId" class="btn btn-danger">Sepetten Kaldır</a>
 
                         </div>
                     </div>
@@ -44,7 +44,7 @@ else
 {
     <div class="text-center">
         No Product in your basket
-        <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Go on to shopping</a>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Keep shopping</a>
 
     </div>
 }

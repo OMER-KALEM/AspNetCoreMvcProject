@@ -45,6 +45,12 @@ namespace AspNetCoreMvcProject.Controllers
             return value;
         }
 
+        public ActionResult LogOut()
+        {
+            _signInManager.SignOutAsync();
+            return View("LogIn", new UserLoginModel());
+        }
+
         public IActionResult LogIn()
         {
             return View(new UserLoginModel());
@@ -99,6 +105,5 @@ namespace AspNetCoreMvcProject.Controllers
             ViewBag.TotalPrice = totalPrice/100;
             return View();
         }
-
     }
 }
