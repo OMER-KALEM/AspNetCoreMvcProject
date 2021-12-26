@@ -8,6 +8,13 @@ namespace AspNetCoreMvcProject.Repositories
 {
     public class ProductRepository : EFRepositoryBase<Product>, IProductRepository
     {
+        private readonly IProductCategoryRepository _productCategoryRepository;
+
+        public ProductRepository(IProductCategoryRepository productCategoryRepository)
+        {
+            _productCategoryRepository = productCategoryRepository;
+        }
+
         public List<Category> GetCategories(int productId)
         {
             using var context = new UygulamaContext();
@@ -28,6 +35,49 @@ namespace AspNetCoreMvcProject.Repositories
                     CategoryName = I.category.CategoryName,
                     CategoryId = I.category.CategoryId
                 }).ToList();
+        }
+
+        public void AddCategory(ProductCategory productCategory)
+        {
+            if (IsProductCategoryNull(productCategory))
+            {
+                _productCategoryRepository.Add(productCategory);
+            }
+        }
+
+        public void RemoveCategory(ProductCategory productCategory)
+        {
+            if (!IsProductCategoryNull(productCategory))
+            {
+                _productCategoryRepository.Remove(productCategory);
+            }
+        }
+
+        public List<Product> GetAllByCategoryId(int categoryId)
+        {
+            using var context = new UygulamaContext();
+            
+            return context.Products.Join(context.ProductCategories,
+                p => p.ProductId, pc => pc.ProductId,
+                (product, productCategory) => new
+                {
+                    Product = product,
+                    ProductCategory = productCategory
+                }).Where(I => I.ProductCategory.CategoryId == categoryId).Select(I => new Product
+                {
+                    ProductId = I.Product.ProductId,
+                    ProductName = I.Product.ProductName,
+                    UnitPrice = I.Product.UnitPrice,
+                    Image = I.Product.Image
+                }).ToList();
+        }
+
+        private bool IsProductCategoryNull(ProductCategory productCategory)
+        {
+            var productCategoryData = _productCategoryRepository.GetProductByCategoryId(
+                I => I.CategoryId == productCategory.CategoryId && I.ProductId == productCategory.ProductId);
+
+            return productCategoryData == null;
         }
     }
 }
