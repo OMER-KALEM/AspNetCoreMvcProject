@@ -24,6 +24,7 @@ namespace AspNetCoreMvcProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UygulamaContext>();
+            services.AddHttpContextAccessor();
             services.AddAuthentication();
             services.AddIdentity<AppUser, IdentityRole>(opt => {
                 opt.Password.RequireDigit = false;
@@ -39,6 +40,7 @@ namespace AspNetCoreMvcProject
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.ExpireTimeSpan = TimeSpan.FromMinutes(30);
             });
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();

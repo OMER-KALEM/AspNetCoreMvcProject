@@ -15,10 +15,12 @@ namespace AspNetCoreMvcProject.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IProductRepository _productRepository;
-        public HomeController(IProductRepository productRepository, SignInManager<AppUser> signInManager)
+        private readonly IBasketRepository _basketRepository;
+        public HomeController(IProductRepository productRepository, SignInManager<AppUser> signInManager, IBasketRepository basketRepository)
         {
             _signInManager = signInManager;
             _productRepository = productRepository;
+            _basketRepository = basketRepository;
         }
 
         public IActionResult Index(int? categoryId)
@@ -64,5 +66,39 @@ namespace AspNetCoreMvcProject.Controllers
             }
             return View(userLoginModel);
         }
+
+        public IActionResult Basket()
+        {
+            return View(_basketRepository.GetProductFromBasket());
+        }
+
+        public IActionResult AddToBasket(int id)
+        {
+            var product = _productRepository.GetById(id);
+            _basketRepository.AddToBasket(product);
+            TempData["notification"] = "Product added to basket";
+
+            return RedirectToAction("");
+        }
+
+        public IActionResult RemoveBasket(decimal totalPrice)
+        {
+            _basketRepository.RemoveBasket();
+            return RedirectToAction("Thanks",new { totalPrice = totalPrice });
+        }
+        public IActionResult RemoveFromBasket(int id)
+        {
+            var productRemove = _productRepository.GetById(id);
+            _basketRepository.RemoveFromBasket(productRemove);
+
+            return RedirectToAction("Basket");
+        }
+
+        public IActionResult Thanks(decimal totalPrice)
+        {
+            ViewBag.TotalPrice = totalPrice/100;
+            return View();
+        }
+
     }
 }

@@ -1,0 +1,50 @@
+﻿@model List<Product>
+
+@{
+    decimal totalPrice = 0;
+    if (Model != null)
+    {
+        totalPrice = Model.Sum(I => I.UnitPrice);
+    }
+}
+
+@if (Model != null)
+{
+    <div>
+        <div class="card">
+            <h5 class="card-header">Price Info</h5>
+            <div class="card-body">
+                <p class="card-text">Total price of basket : @totalPrice TL</p>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Go on to shopping</a>
+                <a asp-action="RemoveBasket" asp-controller="Home" asp-route-totalPrice="@totalPrice" class="btn btn-primary">Buy</a>
+            </div>
+        </div>
+        @foreach (var product in Model)
+        {
+            <div class="card my-1 w-100">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="/img/@product.Image" class="card-img" alt="@product.ProductName">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.ProductName</h5>
+                            <p class="card-text">@product.UnitPrice TL</p>
+                            <a asp-action="RemoveFromBasket" asp-controller="Home" asp-route-id="@product.ProductId" class="btn btn-danger">Remove From Basket</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+else
+{
+    <div class="text-center">
+        No Product in your basket
+        <a asp-action="Index" asp-controller="Home" class="btn btn-warning">Go on to shopping</a>
+
+    </div>
+}
