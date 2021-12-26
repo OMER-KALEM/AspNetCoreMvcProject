@@ -47,9 +47,9 @@ namespace AspNetCoreMvcProject.Repositories
 
         public void RemoveCategory(ProductCategory productCategory)
         {
-            if (!IsProductCategoryNull(productCategory))
+            if (!IsProductCategoryNull(productCategory,out ProductCategory productCategoryData))
             {
-                _productCategoryRepository.Remove(productCategory);
+                _productCategoryRepository.Remove(productCategoryData);
             }
         }
 
@@ -74,7 +74,12 @@ namespace AspNetCoreMvcProject.Repositories
 
         private bool IsProductCategoryNull(ProductCategory productCategory)
         {
-            var productCategoryData = _productCategoryRepository.GetProductByCategoryId(
+            return IsProductCategoryNull(productCategory, out ProductCategory productCategoryData);
+        }
+
+        private bool IsProductCategoryNull(ProductCategory productCategory, out ProductCategory productCategoryData)
+        {
+            productCategoryData = _productCategoryRepository.GetProductByCategoryId(
                 I => I.CategoryId == productCategory.CategoryId && I.ProductId == productCategory.ProductId);
 
             return productCategoryData == null;

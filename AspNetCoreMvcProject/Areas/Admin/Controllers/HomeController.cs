@@ -16,10 +16,12 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public HomeController(IProductRepository productRepository)
+        public HomeController(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
@@ -68,7 +70,8 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
         public IActionResult UpdateProduct(int id)
         {
             var currentProduct = _productRepository.GetById(id);
-            UpdateProductModel updateProductModel = new UpdateProductModel {
+            UpdateProductModel updateProductModel = new UpdateProductModel
+            {
                 ProductId = currentProduct.ProductId,
                 ProductName = currentProduct.ProductName,
                 UnitPrice = currentProduct.UnitPrice
@@ -114,6 +117,53 @@ namespace AspNetCoreMvcProject.Areas.Admin.Controllers
         public IActionResult DeleteProduct(int id)
         {
             _productRepository.Remove(new Product { ProductId = id });
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult AssignCategory(int productId)
+        {
+            var categoriesOfProduct = _productRepository.GetCategories(productId).Select(c => c.CategoryName);
+            var categories = _categoryRepository.GetAll();
+            List<AssignCategoryModel> assignCategoryModelList = new List<AssignCategoryModel>();
+
+            foreach (var category in categories)
+            {
+                AssignCategoryModel assignCategoryModel = new AssignCategoryModel();
+                assignCategoryModel.CategoryId = category.CategoryId;
+                assignCategoryModel.CategoryName = category.CategoryName;
+                assignCategoryModel.IsExist = categoriesOfProduct.Contains(category.CategoryName);
+                assignCategoryModelList.Add(assignCategoryModel);
+
+            }
+
+            TempData["ProductId"] = productId;
+            return View(assignCategoryModelList);
+        }
+
+        [HttpPost]
+        public IActionResult AssignCategory(List<AssignCategoryModel> assignCategoryModelList)
+        {
+            int productId = (int)TempData["ProductId"];
+            foreach (var assignCategoryModel in assignCategoryModelList)
+            {
+                if (assignCategoryModel.IsExist)
+                {
+                    _productRepository.AddCategory(new ProductCategory
+                    {
+                        CategoryId = assignCategoryModel.CategoryId,
+                        ProductId = productId
+                    });
+                }
+                else
+                {
+                    _productRepository.RemoveCategory(new ProductCategory
+                    {
+                        CategoryId = assignCategoryModel.CategoryId,
+                        ProductId = productId
+                    });
+                }
+            }
 
             return RedirectToAction("Index");
         }
